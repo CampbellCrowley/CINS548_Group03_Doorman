@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+  <title>Doorman Registration</title>
+</head>
+<body>
+  <h1>Doorman Registration</h1>
+  <button onclick=start_registration()>Take Photo</button>
+
+  <p id="resText"></p>
+
+  <script>
+    function reqListener() {
+      console.log(this.responseText);
+
+      const text = document.getElementById('resText');
+      text.textContent = this.responseText;
+    }
+
+    window.start_registration = function() {
+      const text = document.getElementById('resText');
+      text.textContent = 'Loading...';
+
+      const xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', reqListener);
+      xhr.addEventListener('error', () => text.textContent = 'Failed!');
+      xhr.open('POST', `${location.origin}/api`);
+      xhr.send('register');
+    };
+  </script>
+</body>

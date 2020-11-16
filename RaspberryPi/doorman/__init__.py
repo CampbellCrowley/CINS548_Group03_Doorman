@@ -1,1 +1,0 @@
-from .doorman import main

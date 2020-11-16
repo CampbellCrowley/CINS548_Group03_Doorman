@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+  <title>Doorman Verification</title>
+</head>
+<body>
+  <h1>Doorman Verification</h1>
+  <form id="form">
+    <input type="text" placeholder="000000" id="numInput" minlength=6 maxlength=6 />
+    <input id="submitButton" type="submit" />
+  </form>
+
+  <p id="resText"></p>
+
+  <script>
+    const input = document.getElementById('numInput');
+    const button = document.getElementById('submitButton');
+    const form = document.getElementById('form');
+
+    form.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      verify();
+    });
+
+    input.addEventListener('input', (evt) => {
+      evt.target.value = evt.target.value.replace(/[^0-9]+/g, '').replace(/^([0-9]{0,6}).*$/, '$1');
+    });
+
+    function reqListener() {
+      console.log(this.responseText);
+
+      const text = document.getElementById('resText');
+      text.textContent = this.responseText;
+    }
+
+    window.verify = function() {
+      const num = input.value;
+      const text = document.getElementById('resText');
+
+      if (!`${num}`.match(/^[0-9]{6}$/)) {
+        text.textContent = 'Invalid Code Format';
+        return;
+      }
+      text.textContent = 'Loading...';
+
+      const xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', reqListener);
+      xhr.addEventListener('error', () => text.textContent = 'Failed!');
+      xhr.open('POST', `${location.origin}/api`);
+      xhr.send(`verify:${num}`);
+    };
+  </script>
+</body>
+
