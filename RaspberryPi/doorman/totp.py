@@ -36,7 +36,7 @@ class TOTP:
     :param email: Email of the user requesting to register with auth app.
     :return: Generated image.
     """
-    return uri_to_qr(get_uri(email))
+    return self.uri_to_qr(get_uri(email))
 
   def uri_to_qr(self, uri):
     """
@@ -54,4 +54,4 @@ class TOTP:
     :param code: The 6-digit code from the auth app.
     :return: True if verified, False if invalid.
     """
-    return totp.verify(code)
+    return self.totp.verify(code)

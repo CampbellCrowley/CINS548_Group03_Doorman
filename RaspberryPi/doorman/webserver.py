@@ -1,6 +1,11 @@
 import http
 import http.server
 import threading
+def undefined_func(self):
+  raise Exception('Function not defined!')
+
+begin_registration = undefined_func
+verify_code = undefined_func
 
 class WebServer:
   """Doorman Webserver for communicating with client."""
@@ -25,6 +30,14 @@ class WebServer:
     self.httpd.shutdown()
     self.thread.join()
 
+  def set_begin_registration(self, func):
+    global begin_registration
+    begin_registration = func
+
+  def set_verify_code(self, func):
+    global verify_code
+    verify_code = func
+
 class RequestHandler(http.server.SimpleHTTPRequestHandler):
   def do_POST(self):
     if not self.path.startswith('/api'):
@@ -37,12 +50,21 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
     post_string = post_data.decode('utf-8')
     print('POST:', post_string)
 
-    if post_string.startswith('verify'):
+    if post_string.startswith('verify:'):
       print('Verification request!')
-      self.send_response(201)
+      code = post_string.split(':')[1]
+      if verify_code(code):
+        print('Verified!')
+        self.send_response(201)
+      else:
+        print('Not verified!')
+        self.send_response(403)
       self.end_headers()
     elif post_string.startswith('register'):
       print('Registration request!')
+
+      begin_registration()
+
       self.send_response(201)
       self.end_headers()
     else:

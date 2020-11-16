@@ -26,10 +26,20 @@
     });
 
     function reqListener() {
-      console.log(this.responseText);
+      console.log(this);
 
       const text = document.getElementById('resText');
-      text.textContent = this.responseText;
+      switch(this.status) {
+        case 200:
+          text.textContent = 'Success!';
+          break;
+        case 403:
+          text.textContent = 'Invalid Code.';
+          break;
+        default:
+          text.textContent = `Unknown response: ${this.status}`;
+          break;
+      }
     }
 
     window.verify = function() {

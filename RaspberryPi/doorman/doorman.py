@@ -20,6 +20,8 @@ class Doorman:
     self.fr = FaceRecognition()
 
     self.server = WebServer(8080)
+    self.server.set_begin_registration(self.begin_registration)
+    self.server.set_verify_code(self.verify_code)
 
     print('Hello world!')
 

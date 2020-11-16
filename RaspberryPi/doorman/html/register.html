@@ -10,10 +10,19 @@
 
   <script>
     function reqListener() {
-      console.log(this.responseText);
+      console.log(this);
 
       const text = document.getElementById('resText');
-      text.textContent = this.responseText;
+
+      switch(this.status) {
+        case 201:
+        case 200:
+          text.textContent = 'Success!';
+          break;
+        default:
+          text.textContent = `Unknown response: ${this.status}`;
+          break;
+      }
     }
 
     window.start_registration = function() {
