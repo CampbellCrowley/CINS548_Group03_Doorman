@@ -1,3 +1,4 @@
 face_recognition
 qrcode[pil]
 pyotp
+websockets

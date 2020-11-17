@@ -15,7 +15,3 @@ def autounlock():
      # Run this script after login.
     subprocess.call([r'<our future script, the lock screen lisener>'])
 
-
-while <replace to socket unlock sign later> {
-    autounlock()
-    }

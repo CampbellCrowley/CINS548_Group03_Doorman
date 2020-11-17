@@ -1,1 +1,2 @@
-# Place pip package names here
+websockets
+pyautogui

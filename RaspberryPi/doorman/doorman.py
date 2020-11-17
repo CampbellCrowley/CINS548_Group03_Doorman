@@ -19,7 +19,7 @@ class Doorman:
     self.totp = TOTP('supersecretkey32') # Key unique to each user.
     self.fr = FaceRecognition()
 
-    self.server = WebServer(8080)
+    self.server = WebServer(port=8080, ws_port=8081)
     self.server.set_begin_registration(self.begin_registration)
     self.server.set_verify_code(self.verify_code)
 
