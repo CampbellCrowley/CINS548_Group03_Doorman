@@ -2,3 +2,6 @@ face_recognition
 qrcode[pil]
 pyotp
 websockets
+opencv-python
+picamera
+numpy
