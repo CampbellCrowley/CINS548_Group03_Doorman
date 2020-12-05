@@ -5,6 +5,7 @@ from face_recognition import FaceRecognition
 from webserver import WebServer
 from totp import TOTP
 import os
+import time
 
 class Doorman:
   """Main Doorman App for the Raspberry Pi."""
@@ -17,17 +18,28 @@ class Doorman:
     print('CWD:', web_dir)
 
     self.totp = TOTP('supersecretkey32') # Key unique to each user.
+
     self.fr = FaceRecognition()
+    self.fr.set_request_unlock(request_unlock)
 
     self.server = WebServer(port=8080, ws_port=8081)
     self.server.set_begin_registration(self.begin_registration)
     self.server.set_verify_code(self.verify_code)
 
+    self.requestedUnlock = False
+
     print('Hello world!')
+
+    self.fr.start_recognition()
 
   def request_unlock(self):
     """Send request to client to unlock the computer."""
     self.server.request_unlock()
+    self.requestedUnlock = True
+    time.sleep(30)
+    if self.requestedUnlock:
+      self.request_lock()
+      self.requestedUnlock = False
 
   def request_lock(self):
     """Send request to client to lock the computer."""
@@ -46,9 +58,14 @@ class Doorman:
     :param code: The code to verify from the user.
     :return: True if verified successfully, False if invalid.
     """
-    # TODO: Cancel request to lock computer if this is valid.
 
     is_valid = self.totp.verify_totp(code)
+
+    self.requestedUnlock = False
+
+    if not is_valid:
+      request_lock()
+
     return is_valid
 
 if __name__ == "__main__":

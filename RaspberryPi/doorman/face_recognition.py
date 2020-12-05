@@ -3,39 +3,69 @@ import cv2
 import picamera
 import numpy as np
 
-webcam = cv2.VideoCapture(0)
+def undefined_func(self):
+  raise Exception('Function not defined!')
+request_unlock = undefined_func
 
-knownFaceEncodings = [
+class FaceRecognition:
+  """
+  Face recognition and identification for Doorman.
+  """
 
-]
+  def __init__(self):
+    print('Face Recognition!')
 
-knownFaceNames = [
-    "User",
-]
+    self.webcam = cv2.VideoCapture(0)
+    #load the default user face encoding
+    image = face_recognition.load_image_file("User.jpg")
+    userEncoding = face_recognition.face_encodings(image)[0]
 
-faceLocations = []
-faceEncodings = []
-faceNames = []
-processThisFrame = True
+    self.knownFaceEncodings = [
+        userEncoding
+    ]
+    self.isRunning = True
 
-while True:
-    ret, frame = webcam.read()
-    smallFrame = cv2.resize(frame,(0,0),fx=0.25,fy=0.25)
-    rgbSmallFrame = smallFrame[:,:,::-1]
+  def shutdown(self):
+    print("FaceRecognition Shutting Down")
+    self.isRunning = False
 
-    if processThisFrame:
-        #find all faces in frame and encode them
-        faceLocations = face_recognition.face_locations(rgbSmallFrame)
-        faceEncodings = face_recognition.face_encodings(rgbSmallFrame,faceLocations)
-        faceNames = []
-        #add all faces to known face encoding list
-        knownFaceEncodings.append(faceEncodings)
+  def set_request_unlock(self, func):
+    global request_unlock
+    request_unlock = func
 
-        processThisFrame = not processThisFrame
+  def start_recognition(self):
+    faceLocations = []
+    faceEncodings = []
+    processThisFrame = True
+    self.isRunning = True
 
-    #hit q to quit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    lastMatched = False
 
-VideoCapture.release()
-cv2.destroyAllWindows()
+    while self.isRunning:
+        ret, frame = self.webcam.read()
+        smallFrame = cv2.resize(frame,(0,0),fx=0.25,fy=0.25)
+        rgbSmallFrame = smallFrame[:,:,::-1]
+
+        if processThisFrame:
+            #find all faces in frame and encode them
+            faceLocations = face_recognition.face_locations(rgbSmallFrame)
+            faceEncodings = face_recognition.face_encodings(rgbSmallFrame,faceLocations)
+
+            for face_encoding in faceEncodings:
+                matches = face_recognition.commpare_faces(knownFaceEncodings,face_encoding)
+
+            if True in matches:
+              if not lastMatched:
+                request_unlock()
+              lastMatched = True
+            else:
+              lastMatched = False
+
+            processThisFrame = not processThisFrame
+
+        #hit q to quit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    VideoCapture.release()
+    cv2.destroyAllWindows()

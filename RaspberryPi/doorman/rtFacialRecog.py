@@ -19,7 +19,6 @@ knownFaceNames = [
 
 faceLocations = []
 faceEncodings = []
-faceNames = []
 processThisFrame = True
 
 while True:
@@ -30,7 +29,6 @@ while True:
     if processThisFrame:
         faceLocations = face_recognition.face_locations(rgbSmallFrame)
         faceEncodings = face_recognition.face_encodings(rgbSmallFrame,faceLocations)
-        faceNames = []
 
         for face_encoding in faceEncodings:
             matches = face_recognition.commpare_faces(knownFaceEncodings,face_encoding)
