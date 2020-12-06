@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+# Author: Campbell Crowley (github@campbellcrowley.com).
 from setuptools import setup
 
 with open('./README.md') as f:

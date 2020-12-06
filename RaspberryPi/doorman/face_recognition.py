@@ -1,3 +1,4 @@
+# Authors: Campbell Crowley (github@campbellcrowley.com) & Kyle Crowley.
 import face_recognition
 import cv2
 import picamera

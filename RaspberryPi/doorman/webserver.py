@@ -1,3 +1,4 @@
+# Author: Campbell Crowley (github@campbellcrowley.com).
 import http
 import http.server
 import threading

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # Doorman main app entry point.
+# Author: Campbell Crowley (github@campbellcrowley.com).
 
 from face_recognition import FaceRecognition
 from webserver import WebServer

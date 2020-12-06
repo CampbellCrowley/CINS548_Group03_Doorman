@@ -1,3 +1,4 @@
+# Author: Campbell Crowley (github@campbellcrowley.com).
 import pyotp
 import qrcode
 

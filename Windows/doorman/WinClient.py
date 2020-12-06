@@ -1,3 +1,4 @@
+# Authors: Campbell Crowley (github@campbellcrowley.com) & Zelin Hu.
 import subprocess
 import pyautogui
 

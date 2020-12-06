@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# Author: Campbell Crowley (github@campbellcrowley.com).
 
 # Need to install 2 libraries:
 # `pip3 install qrcode[pil]`

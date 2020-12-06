@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Author: Campbell Crowley (github@campbellcrowley.com).
 # Doorman windows app entry point.
 import WinClient
 from webclient import WebClient
